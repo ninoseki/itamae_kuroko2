@@ -18,7 +18,14 @@ execute "install kurko2" do
   not_if "test -d /opt/kuroko2/app"
 end
 
-remote_file "/opt/kuroko2/.env"
+file "/opt/kuroko2/.env" do
+  content <<-EOL
+GOOGLE_CLIENT_ID=[client_id]
+GOOGLE_CLIENT_SECRET=[secret]
+GOOGLE_HOSTED_DOMAIN=[your hosted domain]
+  EOL
+  not_if "test -e /opt/kuroko2/.env"
+end
 
 execute "chown -R kuroko2:kuroko2 /opt/kuroko2"
 
